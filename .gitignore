@@ -1,0 +1,5 @@
+
+# Ignore MySQL container data
+docker/mysql/data/
+# Environment
+.env
