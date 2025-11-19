@@ -15,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(RegisterResponse::class, CustomRegisterResponse::class);
+        $this->app->singleton(
+            \Laravel\Fortify\contracts\RegisterResponse::class,
+            \App\Http\Responses\RegisterResponse::class
+        );
     }
 
     /**
