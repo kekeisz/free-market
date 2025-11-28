@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Page\CommentController;
 use App\Http\Controllers\Page\ItemController;
+use App\Http\Controllers\Page\LikeController;
 use App\Http\Controllers\Page\ProfileController;
 use App\Http\Controllers\Page\PurchaseController;
 use App\Http\Controllers\Page\SellController;
@@ -33,20 +35,42 @@ Route::middleware('auth')->group(function(){
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'confirm'])
         ->name('purchase.confirm');
 
+    //
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchase'])
+        ->name('purchase.exec');
+
     //PG07: 送付先住所変更画面
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'address'])
-        ->name('purchase/address');
+        ->name('purchase.address');
+
+    //PG07: 送付先住所変更画面(更新)
+    Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'addressUpdate'])
+        ->name('purchase.address.update');
 
     //PG08: 商品出品画面
     Route::get('/sell', [SellController::class, 'create'])
         ->name('sell.create');
+
     //PG09: プロフィール画面
     Route::get('/mypage', [ProfileController::class, 'show'])
         ->name('mypage');
+
     //PG10:　プロフィール編集画面（設定画面）
     Route::get('mypage/profile', [ProfileController::class, 'edit'])
         ->name('mypage.edit');
+
     //PG11/PG12: 購入した商品一覧, 出品した商品一覧（プロフィール画面）
     Route::get('/mypage/list', [ProfileController::class, 'list'])
         ->name('mypage.list');
+    //
+    Route::post('/item/{item}/like', [LikeController::class, 'store'])
+        ->name('item.like');
+
+    //いいね解除
+    Route::delete('/item/{item}/like', [LikeController::class, 'delete'])
+        ->name('item.unlike');
+
+    //
+    Route::post('item/{item}/comment', [CommentController::class, 'store'])
+        ->name('item.comment.store');
 });

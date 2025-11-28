@@ -9,7 +9,7 @@ class Comment extends Model
 {
     protected $fillable = [
         'user_id',
-        'product_id',
+        'item_id',
         'body',
     ];
 
@@ -17,7 +17,7 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function products() {
-        return $this->belongsToMany(Product::class);
+    public function items() {
+        return $this->belongsToMany(Item::class);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
+use App\Models\Item;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -14,7 +14,7 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        $products = [
+        $items = [
             ['user_id' => 1, 'name' => '革ジャン', 'price' => 15000],
             ['user_id' => 2, 'name' => 'Bluetooth イヤホン', 'price' => 7000],
             ['user_id' => 3, 'name' => 'メンズスニーカー', 'price' => 12000],
@@ -38,11 +38,11 @@ class ProductSeeder extends Seeder
             ['user_id' => 5, 'name' => 'LED卓上ランプ', 'price' => 4000],
         ];
 
-        foreach ($products as $product) {
-            Product::create([
-                'user_id' => $product['user_id'],
-                'name'    => $product['name'],
-                'price'   => $product['price'],
+        foreach ($items as $item) {
+            Item::create([
+                'user_id' => $item['user_id'],
+                'name'    => $item['name'],
+                'price'   => $item['price'],
             ]);
         }
     }

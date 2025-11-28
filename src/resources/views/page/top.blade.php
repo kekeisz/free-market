@@ -10,27 +10,27 @@
         @endif
     </h1>
 
-    <div class="product-list">
-        @forelse($products as $product)
-            <div class="product-card">
-                <a href="{{ url('/item/' . $product->id) }}" class="product-link">
+    <div class="item-list">
+        @forelse($items as $item)
+            <div class="item-card">
+                <a href="{{ url('/item/' . $item->id) }}" class="item-link">
 
-                    <div class="product-name">{{ $product->name }}</div>
-                    <div class="product-price">{{ number_format($product->price) }} 円</div>
+                    <div class="item-name">{{ $item->name }}</div>
+                    <div class="item-price">{{ number_format($item->price) }} 円</div>
 
-                    <div class="product-meta">
-                        <span class="likes-count">いいね：{{ $product->likes_count ?? 0 }}</span>
-                        <span class="comments-count">/ コメント：{{ $product->comments_count ?? 0 }}</span>
+                    <div class="item-meta">
+                        <span class="likes-count">いいね：{{ $item->likes_count ?? 0 }}</span>
+                        <span class="comments-count">/ コメント：{{ $item->comments_count ?? 0 }}</span>
                     </div>
 
-                    @if($product->is_sold)
-                        <div class="product-sold-badge">Sold</div>
+                    @if($item->is_sold)
+                        <div class="item-sold-badge">Sold</div>
                     @endif
 
                 </a>
             </div>
         @empty
-            <p class="product-empty">商品がありません。</p>
+            <p class="item-empty">商品がありません。</p>
         @endforelse
     </div>
 

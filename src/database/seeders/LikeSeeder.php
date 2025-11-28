@@ -17,7 +17,7 @@ class LikeSeeder extends Seeder
             for ($i = 1; $i <= 40; $i++) {
                 Like::firstOrCreate([
                     'user_id' => rand(1, 5),
-                    'product_id' => rand(1, 20),
+                    'item_id' => rand(1, 20),
                 ]);
             }
         }

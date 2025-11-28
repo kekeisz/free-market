@@ -1,0 +1,101 @@
+/* ================================
+   全体の基本設定
+==================================== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f8f9fa;
+}
+
+/* ================================
+   Header レイアウト
+==================================== */
+.app-header {
+    background: #000;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.app-header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+/* ================================
+   ロゴ
+==================================== */
+.app-logo {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+}
+
+/* ================================
+   検索フォーム（ログイン時のみ）
+==================================== */
+.app-search-form {
+    flex: 1;
+    max-width: 350px;
+}
+
+.app-search-input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* ================================
+   ナビゲーション
+==================================== */
+.app-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.app-nav-link {
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+}
+
+.app-nav-link:hover {
+    color: #0077cc;
+}
+
+/* ================================
+   ログアウトボタン
+==================================== */
+.app-logout-form {
+    margin: 0;
+}
+
+.app-logout-button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.app-logout-button:hover {
+    color: #0077cc;
+}
+
+/* ================================
+   メインコンテンツ
+==================================== */
+.app-main {
+    max-width: 1280px;
+    margin: 20px auto;
+    padding: 0 20px;
+}

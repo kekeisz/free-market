@@ -1,16 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8">
     <title>@yield('title','coachtech')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    @vite('resources/css/app.css')
+    <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+    @yield('css')
   </head>
   <body class="app-body">
     <header class="app-header">
       <div class="app-header-inner">
         <a href="/" class="app-logo">
-          coachtech
+          COACHTECH
         </a>
 
         @if (!request()->routeIs('login', 'register'))

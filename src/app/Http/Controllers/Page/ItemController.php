@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Page;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\Item;
 
 class ItemController extends Controller
 {
     public function show($item_id) {
-        $product = Product::with([
+        $item = Item::with([
             'user',
             'categories',
             'likes',
@@ -17,6 +17,6 @@ class ItemController extends Controller
         ->withCount(['likes','comments'])
         ->findOrFail($item_id);//該当のproductが見つからない場合404を返す
 
-        return view('page.item', compact('product'));
+        return view('page.item', compact('item'));
     }
 }

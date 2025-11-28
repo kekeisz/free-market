@@ -9,14 +9,14 @@ class Like extends Model
 {
     protected $fillable = [
         'user_id',
-        'product_id',
+        'item_id',
     ];
 
     public function user() {
         return $this->belongsTo(User::class);
     }
 
-    public function products() {
-        return $this->belongsToMany(Product::class);
+    public function items() {
+        return $this->belongsToMany(Item::class);
     }
 }
