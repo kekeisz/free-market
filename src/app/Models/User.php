@@ -45,6 +45,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function items() {
         return $this->hasMany(Item::class);
     }
@@ -55,5 +58,12 @@ class User extends Authenticatable
 
     public function comments() {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function boughtItems() {
+        return $this->hasMany(Item::class, 'buyer_Id');
     }
 }

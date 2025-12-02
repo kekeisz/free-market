@@ -36,10 +36,6 @@
 
         <nav class="app-nav">
           @auth
-            <a href="/sell" class="app-nav-link">出品</a>
-            <a href="/?page=mylist" class="app-nav-link">マイリスト</a>
-            <a href="/mypage" class="app-nav-link">マイページ</a>
-
             <form
               method="post"
               action="/logout"
@@ -50,6 +46,8 @@
                 ログアウト
               </button>
             </form>
+            <a href="/mypage" class="app-nav-link">マイページ</a>
+            <a href="/sell" class="app-nav-link">出品</a>
           @else
             <a href="/login" class="app-nav-link">ログイン</a>
             <a href="/register" class="app-nav-link">会員登録</a>

@@ -51,17 +51,21 @@ Route::middleware('auth')->group(function(){
     Route::get('/sell', [SellController::class, 'create'])
         ->name('sell.create');
 
+    // PG08: 商品出品登録処理
+    Route::post('/sell', [SellController::class, 'store'])
+        ->name('sell.store');
+
     //PG09: プロフィール画面
     Route::get('/mypage', [ProfileController::class, 'show'])
         ->name('mypage');
 
     //PG10:　プロフィール編集画面（設定画面）
-    Route::get('mypage/profile', [ProfileController::class, 'edit'])
+    Route::get('/mypage/profile', [ProfileController::class, 'edit'])
         ->name('mypage.edit');
 
-    //PG11/PG12: 購入した商品一覧, 出品した商品一覧（プロフィール画面）
-    Route::get('/mypage/list', [ProfileController::class, 'list'])
-        ->name('mypage.list');
+    Route::post('/mypage/profile', [ProfileController::class, 'update'])
+        ->name('mypage.update');
+
     //
     Route::post('/item/{item}/like', [LikeController::class, 'store'])
         ->name('item.like');

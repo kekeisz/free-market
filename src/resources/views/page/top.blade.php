@@ -1,38 +1,80 @@
 @extends('layouts.app')
-@section('title','ページ')
+
+@section('title', '商品一覧')
+
 @section('content')
 <div class="top-page">
 
-    <h1 class="top-title">
-        商品一覧
-        @if($page === 'mylist')
-            （マイリスト）
-        @endif
-    </h1>
+  <h1>商品一覧</h1>
 
-    <div class="item-list">
-        @forelse($items as $item)
-            <div class="item-card">
-                <a href="{{ url('/item/' . $item->id) }}" class="item-link">
+  <div class="top-body">
 
-                    <div class="item-name">{{ $item->name }}</div>
-                    <div class="item-price">{{ number_format($item->price) }} 円</div>
+    {{-- タブ（おすすめ / マイリスト） --}}
+    <nav class="top-tabs">
+      {{-- おすすめ（全商品）：クエリに page を付けない --}}
+      <a
+        href="{{ route('top', $keyword ? ['keyword' => $keyword] : []) }}"
+        class="top-tab-link {{ $page !== 'mylist' ? 'is-active' : '' }}"
+      >
+        おすすめ
+      </a>
 
-                    <div class="item-meta">
-                        <span class="likes-count">いいね：{{ $item->likes_count ?? 0 }}</span>
-                        <span class="comments-count">/ コメント：{{ $item->comments_count ?? 0 }}</span>
-                    </div>
+      {{-- マイリスト（いいねした商品）：?page=mylist --}}
+      <a
+        href="{{ route('top', array_filter(['page' => 'mylist', 'keyword' => $keyword])) }}"
+        class="top-tab-link {{ $page === 'mylist' ? 'is-active' : '' }}"
+      >
+        マイリスト
+      </a>
+    </nav>
 
-                    @if($item->is_sold)
-                        <div class="item-sold-badge">Sold</div>
-                    @endif
+    <hr>
 
-                </a>
+    {{-- 見出し（文言だけ切り替え） --}}
+    <h2 class="top-section-title">
+      @if ($page === 'mylist')
+        マイリスト
+      @else
+        おすすめ
+      @endif
+    </h2>
+
+    {{-- 商品一覧（中身は $items をそのまま使う） --}}
+    <div class="top-list">
+      @forelse ($items as $item)
+        <div class="top-item">
+          {{-- 商品画像 --}}
+          @if ($item->image)
+            <div class="top-item-image">
+              <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
+                <img
+                  src="{{ asset('storage/' . $item->image) }}"
+                  alt="{{ $item->name }}"
+                  width="160"
+                >
+              </a>
             </div>
-        @empty
-            <p class="item-empty">商品がありません。</p>
-        @endforelse
+          @endif
+
+          {{-- 商品名 --}}
+          <div class="top-item-name">
+            <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
+              {{ $item->name }}
+            </a>
+          </div>
+        </div>
+      @empty
+        <p>
+          @if ($page === 'mylist')
+            マイリストに登録された商品はありません
+          @else
+            商品がありません
+          @endif
+        </p>
+      @endforelse
     </div>
+
+  </div>
 
 </div>
 @endsection

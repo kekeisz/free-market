@@ -9,7 +9,10 @@ class Item extends Model
 {
     protected $fillable =[
         'user_id',
+        'buyer_id',
         'name',
+        'description',
+        'status',
         'price',
         'image',
         'is_sold',
@@ -29,5 +32,9 @@ class Item extends Model
 
     public function comments() {
         return $this->hasMany(Comment::class);
+    }
+
+    public function buyer() {
+        return $this->belongsTo(User::class, 'buyer_id');
     }
 }
