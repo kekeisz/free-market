@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('title', '商品一覧')
 
 @section('content')
@@ -7,72 +6,66 @@
 
   <h1>商品一覧</h1>
 
-  <div class="top-body">
+  {{-- タブ（おすすめ / マイリスト） --}}
+  <nav class="top-tabs">
+    <a
+      href="{{ route('top') }}"
+      class="top-tab-link {{ $page === null ? 'is-active' : '' }}"
+    >
+      おすすめ
+    </a>
 
-    {{-- タブ（おすすめ / マイリスト） --}}
-    <nav class="top-tabs">
-      {{-- おすすめ（全商品）：クエリに page を付けない --}}
-      <a
-        href="{{ route('top', $keyword ? ['keyword' => $keyword] : []) }}"
-        class="top-tab-link {{ $page !== 'mylist' ? 'is-active' : '' }}"
-      >
-        おすすめ
-      </a>
+    <a
+      href="{{ route('top', ['page' => 'mylist']) }}"
+      class="top-tab-link {{ $page === 'mylist' ? 'is-active' : '' }}"
+    >
+      マイリスト
+    </a>
+  </nav>
 
-      {{-- マイリスト（いいねした商品）：?page=mylist --}}
-      <a
-        href="{{ route('top', array_filter(['page' => 'mylist', 'keyword' => $keyword])) }}"
-        class="top-tab-link {{ $page === 'mylist' ? 'is-active' : '' }}"
-      >
-        マイリスト
-      </a>
-    </nav>
+  <hr>
 
-    <hr>
+  {{-- 商品一覧 --}}
+  <div class="top-items">
 
-    {{-- 見出し（文言だけ切り替え） --}}
-    <h2 class="top-section-title">
-      @if ($page === 'mylist')
-        マイリスト
-      @else
-        おすすめ
-      @endif
-    </h2>
+    @forelse ($items as $item)
 
-    {{-- 商品一覧（中身は $items をそのまま使う） --}}
-    <div class="top-list">
-      @forelse ($items as $item)
-        <div class="top-item">
-          {{-- 商品画像 --}}
-          @if ($item->image)
-            <div class="top-item-image">
-              <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
-                <img
-                  src="{{ asset('storage/' . $item->image) }}"
-                  alt="{{ $item->name }}"
-                  width="160"
-                >
-              </a>
-            </div>
-          @endif
+      <div class="top-item">
 
-          {{-- 商品名 --}}
-          <div class="top-item-name">
-            <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
-              {{ $item->name }}
-            </a>
-          </div>
+        {{-- ★ 画像（FN029 ＋ ダミー画像対応） --}}
+        @php
+          $imageUrl = $item->image
+            ? asset('storage/' . $item->image)
+            : null;
+        @endphp
+
+        @if ($imageUrl)
+          <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
+            <img
+              src="{{ $imageUrl }}"
+              alt="{{ $item->name }}"
+              class="top-item-image"
+            >
+          </a>
+        @endif
+
+        {{-- 商品名 --}}
+        <div class="top-item-name">
+          <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
+            {{ $item->name }}
+          </a>
         </div>
-      @empty
-        <p>
-          @if ($page === 'mylist')
-            マイリストに登録された商品はありません
-          @else
-            商品がありません
-          @endif
-        </p>
-      @endforelse
-    </div>
+
+        {{-- ★ Sold バッジ（要件 FN014-3 / FN015-3） --}}
+        @if (!empty($item->is_sold) && $item->is_sold)
+          <span class="top-item-badge">Sold</span>
+        @endif
+
+      </div>
+
+    @empty
+      <p>商品がありません</p>
+    @endforelse
 
   </div>
 
