@@ -1,0 +1,170 @@
+/* ===== 商品一覧ページ全体 ===== */
+
+.top-page {
+    max-width: 1440px; /* 4列レイアウト前提の幅 */
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+.top-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+/* ===== タブ部分（おすすめ / マイリスト） ===== */
+
+.top-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.top-tab-link {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    text-decoration: none;
+    color: #333;
+    background: #f8f8f8;
+}
+
+.top-tab-link.is-active {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+.top-divider {
+    margin: 12px 0 16px;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* ===== 商品グリッド（列数制御） ===== */
+
+/* デフォルト：1列 */
+.top-item-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+/* 画面幅が約 416px 以上 → 2列（200px×2 + 隙間） */
+@media (min-width: 416px) {
+    .top-item-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 画面幅が約 632px 以上 → 3列（200px×3 + 隙間） */
+@media (min-width: 632px) {
+    .top-item-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 画面幅が約 848px 以上 → 4列（200px×4 + 隙間） */
+@media (min-width: 848px) {
+    .top-item-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ===== 商品カード ===== */
+
+.top-item-card {
+    /* セルの中でカード幅を制御 */
+    min-width: 200px;
+    max-width: 290px;
+    width: 100%;
+    margin: 0 auto; /* セルの中央に寄せる */
+
+    border: 0px solid;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+}
+
+.top-item-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===== 画像（正方形：カード幅に追従） ===== */
+
+.top-item-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 正方形維持 */
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f3f3f3;
+}
+
+.top-item-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 画像がないときのプレースホルダ（保険） */
+.top-item-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top-item-image-placeholder-text {
+    font-size: 12px;
+    color: #888;
+}
+
+/* ===== 商品名 + Sold バッジ 行 ===== */
+
+.top-item-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* 商品名（2行で省略） */
+.top-item-name {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+
+    /* 2行くらいで折り返して省略 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+/* Soldバッジ */
+.top-item-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    border-radius: 9999px;
+    border: 1px solid #d9534f;
+    color: #d9534f;
+    background: #fff;
+    white-space: nowrap;
+}
+
+/* ===== 空状態 ===== */
+
+.top-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    padding: 32px 0;
+}

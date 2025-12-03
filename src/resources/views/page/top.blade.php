@@ -1,10 +1,15 @@
 @extends('layouts.app')
+
 @section('title', '商品一覧')
+
+@section('css')
+  <link rel="stylesheet" href="{{ asset('css/top.css') }}">
+@endsection
 
 @section('content')
 <div class="top-page">
 
-  <h1>商品一覧</h1>
+  <h1 class="top-title">商品一覧</h1>
 
   {{-- タブ（おすすめ / マイリスト） --}}
   <nav class="top-tabs">
@@ -23,50 +28,47 @@
     </a>
   </nav>
 
-  <hr>
+  <hr class="top-divider">
 
-  {{-- 商品一覧 --}}
-  <div class="top-items">
-
+  {{-- 商品グリッド --}}
+  <div class="top-item-grid">
     @forelse ($items as $item)
+      <div class="top-item-card">
 
-      <div class="top-item">
+        <a href="{{ route('item.show', ['item_id' => $item->id]) }}" class="top-item-link">
 
-        {{-- ★ 画像（FN029 ＋ ダミー画像対応） --}}
-        @php
-          $imageUrl = $item->image
-            ? asset('storage/' . $item->image)
-            : null;
-        @endphp
+          {{-- 画像：290pxの正方形 --}}
+          @if ($item->image)
+            <div class="top-item-image-wrapper">
+              <img
+                src="{{ asset('storage/' . $item->image) }}"
+                alt="{{ $item->name }}"
+                class="top-item-image"
+              >
+            </div>
+          @else
+            <div class="top-item-image-wrapper top-item-image-placeholder">
+              <span class="top-item-image-placeholder-text">No Image</span>
+            </div>
+          @endif
 
-        @if ($imageUrl)
-          <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
-            <img
-              src="{{ $imageUrl }}"
-              alt="{{ $item->name }}"
-              class="top-item-image"
-            >
-          </a>
-        @endif
+          {{-- 商品名 + Soldバッジ --}}
+          <div class="top-item-info">
+            <div class="top-item-name">
+              {{ $item->name }}
+            </div>
 
-        {{-- 商品名 --}}
-        <div class="top-item-name">
-          <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
-            {{ $item->name }}
-          </a>
-        </div>
+            @if (!empty($item->is_sold) && $item->is_sold)
+              <span class="top-item-badge">Sold</span>
+            @endif
+          </div>
 
-        {{-- ★ Sold バッジ（要件 FN014-3 / FN015-3） --}}
-        @if (!empty($item->is_sold) && $item->is_sold)
-          <span class="top-item-badge">Sold</span>
-        @endif
+        </a>
 
       </div>
-
     @empty
-      <p>商品がありません</p>
+      <p class="top-empty">商品がありません</p>
     @endforelse
-
   </div>
 
 </div>
