@@ -1,33 +1,71 @@
 @extends('layouts.app')
-
-@section('title', 'この商品は購入できません')
+@section('title', '購入確認')
 
 @section('content')
-    <div class="purchase-sold">
-        <div class="purchase-sold-card">
-            {{-- 商品画像（あれば） --}}
-            @if (!empty($item->image))
-                <div class="purchase-sold-image">
-                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
-                </div>
-            @endif
-            {{-- 商品名 --}}
-            <h1 class="purchase-sold-title">
-                {{ $item->name }}
-            </h1>
-            {{-- メッセージ --}}
-            <p class="purchase-sold-message">
-                この商品は既に購入されています。
-            </p>
-            {{-- ボタン群 --}}
-            <div class="purchase-sold-actions">
-                <a href="{{ route('top') }}" class="btn-link">
-                    商品一覧へ
-                </a>
-                <a href="{{ route('top', ['page' => 'mylist']) }}" class="btn-link">
-                    マイリストへ
-                </a>
-            </div>
+<div class="purchase-page">
+
+    <h1>購入確認</h1>
+
+    @if ($errors->any())
+        <div class="purchase-errors">
+            @foreach ($errors->all() as $error)
+                <p style="color:red;">{{ $error }}</p>
+            @endforeach
         </div>
+    @endif
+
+    @if (session('success'))
+        <p style="color:green;">{{ session('success') }}</p>
+    @endif
+
+    <div class="purchase-item">
+        <p>商品名：{{ $item->name }}</p>
+        <p>価格：{{ number_format($item->price) }} 円</p>
     </div>
+
+    <div class="purchase-address">
+        <h2>送付先住所</h2>
+
+        @php
+            // ★ shippingAddress があれば優先、無ければ user 情報
+            $name     = $shippingAddress->name     ?? $user->name;
+            $postcode = $shippingAddress->postcode ?? $user->postcode;
+            $address  = $shippingAddress->address  ?? $user->address;
+        @endphp
+
+        @if ($address)
+            <p>
+                お名前：{{ $name }}<br>
+                郵便番号：{{ $postcode }}<br>
+                住所：{{ $address }}
+            </p>
+        @else
+            <p>住所未登録</p>
+        @endif
+
+        <a href="{{ route('purchase.address', $item->id) }}">
+            住所を変更する
+        </a>
+    </div>
+
+    <form action="{{ route('purchase.exec', $item->id) }}" method="POST">
+        @csrf
+
+        <div class="purchase-payment">
+            <label for="payment_method">支払い方法</label>
+            <select id="payment_method" name="payment_method" required>
+                <option value="">選択してください</option>
+                <option value="convenience" @selected(old('payment_method') === 'convenience')>
+                    コンビニ払い
+                </option>
+                <option value="card" @selected(old('payment_method') === 'card')>
+                    クレジットカード
+                </option>
+            </select>
+        </div>
+
+        <button type="submit">購入する</button>
+    </form>
+
+</div>
 @endsection

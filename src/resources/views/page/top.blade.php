@@ -8,9 +8,6 @@
 
 @section('content')
 <div class="top-page">
-
-  <h1 class="top-title">商品一覧</h1>
-
   {{-- タブ（おすすめ / マイリスト） --}}
   <nav class="top-tabs">
     <a

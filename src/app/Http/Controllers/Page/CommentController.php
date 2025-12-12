@@ -19,5 +19,7 @@ class CommentController extends Controller
             'item_id' => $item->id,
             'body' => $data['body'],
         ]);
+
+        return back();
     }
 }

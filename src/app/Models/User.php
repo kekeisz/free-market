@@ -64,6 +64,6 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function boughtItems() {
-        return $this->hasMany(Item::class, 'buyer_Id');
+        return $this->hasMany(Item::class, 'buyer_id');
     }
 }

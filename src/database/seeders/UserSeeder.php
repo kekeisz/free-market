@@ -21,12 +21,13 @@ class UserSeeder extends Seeder
             ['name' => 'Carol',   'email' => 'carol@test.com'],
             ['name' => 'Dave',    'email' => 'dave@test.com'],
             ['name' => 'Ellen',   'email' => 'ellen@test.com'],
+            ['name' => 'Keke',    'email' => 'kekeisozaki13@gmail.com']
         ];
 
-        foreach ($users as $u) {
+        foreach ($users as $user) {
             User::create([
-                'name' => $u['name'],
-                'email' => $u['email'],
+                'name' => $user['name'],
+                'email' => $user['email'],
                 'password' => Hash::make('password123'),
                 'postcode' => '150-0001',
                 'address' => '東京都渋谷区神宮前1-1-1',

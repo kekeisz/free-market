@@ -1,23 +1,87 @@
 @extends('layouts.app')
-@section('title','会員登録')
+
+@section('title', '会員登録')
+
+@section('css')
+  <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+@endsection
+
 @section('content')
-  <h1 class="text-xl font-bold mb-4">会員登録</h1>
-  @if ($errors->any())
-    <div style="color:red">{{ $errors->first() }}</div>
-  @endif
-  <form method="POST" action="/register">
-    @csrf
-    <div>
-      <label>ユーザー名</label>
-      <input type="text" name="name" required>
+    <div class="auth-page">
+        <h1 class="auth-title">会員登録</h1>
+
+        @if ($errors->any())
+            <div class="form-error">
+                {{ $errors->first() }}
+            </div>
+        @endif
+
+        <form
+            method="POST"
+            action="{{ route('register') }}"
+            class="auth-form"
+        >
+            @csrf
+
+            <div class="form-field">
+                <label class="form-label">
+                    ユーザー名
+                </label>
+                <input
+                    type="text"
+                    name="name"
+                    value="{{ old('name') }}"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">
+                    メールアドレス
+                </label>
+                <input
+                    type="email"
+                    name="email"
+                    value="{{ old('email') }}"
+                    required
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">
+                    パスワード
+                </label>
+                <input
+                    type="password"
+                    name="password"
+                    required
+                    minlength="8"
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">
+                    確認用パスワード
+                </label>
+                <input
+                    type="password"
+                    name="password_confirmation"
+                    required
+                    minlength="8"
+                    class="form-input"
+                >
+            </div>
+
+            <button type="submit" class="auth-submit-button">
+                会員登録
+            </button>
+        </form>
+
+        <p class="auth-link">
+            <a href="{{ route('login') }}">ログインはこちら</a>
+        </p>
     </div>
-    <div>
-      <label>メール</label>
-      <input type="email" name="email" required>
-    </div>
-    <div><label>パスワード</label><input type="password" name="password" required minlength="8"></div>
-    <div><label>確認用パスワード</label><input type="password" name="password_confirmation" required minlength="8"></div>
-    <button type="submit">登録</button>
-  </form>
-  <p class="mt-4"><a href="/login">ログインへ</a></p>
 @endsection

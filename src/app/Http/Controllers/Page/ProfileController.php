@@ -54,28 +54,4 @@ class ProfileController extends Controller
             ->route('mypage.edit')
             ->with('status', 'プロフィールを更新しました。');
     }
-
-    public function list(Request $request) {
-        /** @var User $user */
-        $user = Auth::user();
-
-        $tab = $request->query('page', 'buy');
-
-        if ($tab === 'sell') {
-            $items = $user->items()
-                ->latest()
-                ->get();
-        } else {
-            $items = $user->boughtItems()
-                ->latest()
-                ->get();
-            $tab = 'buy';
-        }
-
-        return view('page.mypage_list', [
-            'user'  => $user,
-            'tab'   => $tab,
-            'items' => $items,
-        ]);
-    }
 }

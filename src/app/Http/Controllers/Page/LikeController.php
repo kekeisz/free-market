@@ -19,7 +19,7 @@ class LikeController extends Controller
         return back();
     }
 
-    public function destroy(Item $item) {
+    public function delete(Item $item) {
         $userId = Auth::id();
 
         Like::where('user_id', $userId)
