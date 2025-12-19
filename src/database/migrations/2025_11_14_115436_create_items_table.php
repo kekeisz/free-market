@@ -16,7 +16,18 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('buyer_id')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
             $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('status')->nullable();
+            $table->foreignId('condition_id')
+                ->nullable()
+                ->constrained('conditions')
+                ->nullOnDelete();
+            $table->string('brand')->nullable();
             $table->integer('price');
             $table->string('image')->nullable();
             $table->boolean('is_sold')->default(false);

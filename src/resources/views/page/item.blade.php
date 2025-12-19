@@ -241,12 +241,21 @@
                             </div>
 
                             <div class="item-comment-form-actions">
-                                <button
-                                    type="submit"
-                                    class="btn-comment-submit js-comment-submit"
-                                >
-                                    コメントを送信する
-                                </button>
+                                @auth
+                                    <button
+                                        type="submit"
+                                        class="btn-comment-submit js-comment-submit"
+                                    >
+                                        コメントを送信する
+                                    </button>
+                                @else
+                                    <button
+                                        type="submit"
+                                        class="btn-comment-submit js-comment-submit"
+                                    >
+                                        ログインしてコメントする
+                                    </button>
+                                @endauth
                             </div>
                         </form>
                     </div>

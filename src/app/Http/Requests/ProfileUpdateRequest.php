@@ -25,14 +25,20 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name'          => ['required', 'string', 'max:255'],
-            'postcode'      => ['nullable', 'string', 'max:20', 'nullable', 'regex:/^\d{3}-\d{4}$/'],
+            'postcode'      => ['nullable', 'string', 'max:20', 'regex:/^\d{3}-\d{4}$/'],
             'address'       => ['nullable', 'string', 'max:255'],
             'building'      => ['nullable', 'string', 'max:255'],
             'profile_image' => ['nullable', 'image', 'max:2048'],
         ];
     }
 
-    public function messages(){
+    /**
+     * Get custom error messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
         return [
             'name.required' => 'ユーザー名は必須です。',
             'name.string'   => 'ユーザー名は文字列で入力してください。',
@@ -40,7 +46,7 @@ class ProfileUpdateRequest extends FormRequest
 
             'postcode.string' => '郵便番号は文字列で入力してください。',
             'postcode.max'    => '郵便番号は20文字以内で入力してください。',
-            'postcode.regex'  => '郵便番号は「1234567」または「123-4567」の形式で入力してください。',
+            'postcode.regex'  => '郵便番号は「123-4567」の形式で入力してください。',
 
             'address.string' => '住所は文字列で入力してください。',
             'address.max'    => '住所は255文字以内で入力してください。',

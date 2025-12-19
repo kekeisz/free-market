@@ -20,6 +20,7 @@ class ShippingAddresses extends Migration
             $table->string('name');
             $table->string('postcode',8);
             $table->string('address');
+            $table->string('building')->nullable();
             $table->timestamps();
 
             $table->unique(['user_id','item_id']);

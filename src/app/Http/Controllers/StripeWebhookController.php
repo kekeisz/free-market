@@ -51,6 +51,10 @@ class StripeWebhookController extends Controller
             return response('ok', 200);
         }
 
+        if ($checkout->status === 'paid') {
+            return response('ok', 200);
+        }
+
         DB::transaction(function () use ($checkout) {
             $item = Item::where('id', $checkout->item_id)->lockForUpdate()->first();
             if (!$item || (bool) $item->is_sold) {
