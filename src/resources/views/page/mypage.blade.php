@@ -3,11 +3,16 @@
 @section('title', 'マイページ')
 
 @section('css')
-  <link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
 @endsection
 
 @section('content')
     <div class="mypage">
+        @if (session('status'))
+            <div class="profile-edit-flash">
+                {{ session('status') }}
+            </div>
+        @endif
         <div class="mypage-header">
             <div class="mypage-header-left">
                 <div class="mypage-header-image">

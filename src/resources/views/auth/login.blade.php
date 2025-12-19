@@ -3,23 +3,18 @@
 @section('title', 'ログイン')
 
 @section('css')
-  <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 @endsection
 
 @section('content')
     <div class="auth-page">
         <h1 class="auth-title">ログイン</h1>
 
-        @if ($errors->any())
-            <div class="form-error">
-                {{ $errors->first() }}
-            </div>
-        @endif
-
         <form
             method="POST"
             action="{{ route('login') }}"
             class="auth-form"
+            novalidate
         >
             @csrf
 
@@ -30,9 +25,14 @@
                 <input
                     type="email"
                     name="email"
-                    required
+                    value="{{ old('email') }}"
                     class="form-input"
                 >
+                @error('email')
+                    <p class="form-error">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
             <div class="form-field">
@@ -42,9 +42,13 @@
                 <input
                     type="password"
                     name="password"
-                    required
                     class="form-input"
                 >
+                @error('password')
+                    <p class="form-error">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
             <button type="submit" class="auth-submit-button">

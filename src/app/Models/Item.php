@@ -11,11 +11,12 @@ class Item extends Model
         'user_id',
         'buyer_id',
         'name',
+        'brand',
         'description',
-        'status',
         'price',
         'image',
         'is_sold',
+        'condition_id'
     ];
 
     public function user() {

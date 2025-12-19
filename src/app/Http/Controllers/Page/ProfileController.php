@@ -51,7 +51,7 @@ class ProfileController extends Controller
         $user->update($validated);
 
         return redirect()
-            ->route('mypage.edit')
+            ->route('mypage')
             ->with('status', 'プロフィールを更新しました。');
     }
 }

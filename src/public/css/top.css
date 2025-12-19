@@ -88,14 +88,19 @@
 }
 
 .top-item-badge {
-    font-size: 12px;
+    margin-left: 20px;
+    padding: 2px 12px;
+    border: solid 2px #ff5555;
+    border-radius: 999px;
+    font-size: 22px;
     font-weight: 700;
     color: #ff5555;
 }
 
 .top-empty {
-    margin-top: 40px;
-    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 80px;
+    font-size: 20px;
 }
 
 @media (max-width: 1200px) {
@@ -119,6 +124,21 @@
         grid-template-columns: repeat(2, minmax(200px, 1fr));
         row-gap: 30px;
         padding: 0 100px;
+    }
+
+    .top-item-name {
+        font-size: 20px;
+    }
+
+    .top-item-badge {
+        margin-left: 6px;
+        padding: 2px 6px;
+        font-size: 15px;
+    }
+
+    .top-empty {
+        margin-left: 10px;
+        font-size: 15px;
     }
 }
 

@@ -6,20 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\Item;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function store(CommentRequest $request, Item $item) {
-        $data = $request->validated();
+    public function store(CommentRequest $request, Item $item)
+    {
+        $validated = $request->validated();
 
         Comment::create([
             'user_id' => Auth::id(),
             'item_id' => $item->id,
-            'body' => $data['body'],
+            'body' => $validated['body'],
         ]);
 
-        return back();
+        return redirect()
+            ->route('item.show', ['item_id' => $item->id]);
     }
 }

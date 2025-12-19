@@ -7,10 +7,10 @@
         <link rel="stylesheet" href="{{ asset('css/common.css') }}">
         @yield('css')
     </head>
+
     <body class="app-body">
         <header class="app-header">
             <div class="app-header-inner">
-                {{-- ロゴ --}}
                 <a href="{{ route('top') }}" class="app-logo">
                     <img
                         src="{{ asset('images/logos/coachtech-logo.png') }}"
@@ -19,8 +19,7 @@
                     >
                 </a>
 
-                {{-- 検索フォーム（ログイン/会員登録画面以外で表示） --}}
-                @if (!request()->routeIs('login', 'register'))
+                @unless (request()->routeIs('login', 'register', 'verification.notice'))
                     <form
                         method="GET"
                         action="{{ route('top') }}"
@@ -38,33 +37,41 @@
                             class="app-search-input"
                         >
                     </form>
-                @endif
 
-                {{-- 右側ナビゲーション --}}
-                <nav class="app-nav">
-                    @auth
-                        {{-- ① ログアウト --}}
-                        <form
-                            method="post"
-                            action="/logout"
-                            class="app-logout-form"
-                        >
-                            @csrf
-                            <button type="submit" class="app-nav-link app-logout-button">
-                                ログアウト
-                            </button>
-                        </form>
+                    <nav class="app-nav">
+                        @auth
+                            <form
+                                method="POST"
+                                action="{{ url('/logout') }}"
+                                class="app-logout-form"
+                            >
+                                @csrf
+                                <button
+                                    type="submit"
+                                    class="app-nav-link app-logout-button"
+                                >
+                                    ログアウト
+                                </button>
+                            </form>
 
-                        {{-- ② マイページ --}}
-                        <a href="/mypage" class="app-nav-link">マイページ</a>
+                            <a href="{{ route('mypage') }}" class="app-nav-link">
+                                マイページ
+                            </a>
 
-                        {{-- ③ 出品（白ボタン） --}}
-                        <a href="/sell" class="app-nav-sell-btn">出品</a>
-                    @else
-                        <a href="/login" class="app-nav-link">ログイン</a>
-                        <a href="/register" class="app-nav-link">会員登録</a>
-                    @endauth
-                </nav>
+                            <a href="{{ route('sell.create') }}" class="app-nav-sell-btn">
+                                出品
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}" class="app-nav-link">
+                                ログイン
+                            </a>
+
+                            <a href="{{ route('register') }}" class="app-nav-link">
+                                会員登録
+                            </a>
+                        @endauth
+                    </nav>
+                @endunless
             </div>
         </header>
 

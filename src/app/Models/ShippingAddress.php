@@ -15,6 +15,7 @@ class ShippingAddress extends Model
         'name',
         'postcode',
         'address',
+        'building'
     ];
 
     public function user() {

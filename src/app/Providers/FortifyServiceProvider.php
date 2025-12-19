@@ -6,6 +6,9 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Requests\LoginRequest;
+use App\Http\Responses\LoginResponse;
+use App\Http\Responses\RegisterResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,53 +16,78 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+        $this->app->singleton(RegisterResponseContract::class, RegisterResponse::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        Fortify::loginView(fn () => view('auth.login'));
+
+        Fortify::loginView(function () {
+            $previousUrl = url()->previous();
+            $isAuthPage = str_contains($previousUrl, '/login') || str_contains($previousUrl, '/register');
+
+            if (!session()->has('url.intended') && ! $isAuthPage) {
+                session(['url.intended' => $previousUrl]);
+            }
+
+            return view('auth.login');
+        });
+
         Fortify::registerView(fn () => view('auth.register'));
 
-        //Fortifyのカスタム認証フックを登録。ルールを記述。
         Fortify::authenticateUsing(function (Request $request) {
-            Validator::make($request->all(), [
-                'email' => ['required','email'],
-                'password' => ['required','string']
-            ])->validate();
+            $loginRequest = app(\App\Http\Requests\LoginRequest::class);
 
-            //ユーザーの取得。リクエストのユーザーのうち、emailが最初に一致するUserモデルのユーザーを1件取得。
-            $user = \App\Models\User::where('email',$request->email)->first();
+            Validator::make(
+                $request->all(),
+                $loginRequest->rules(),
+                $loginRequest->messages(),
+                method_exists($loginRequest, 'attributes')
+                    ? $loginRequest->attributes()
+                    : []
+            )->validate();
 
-            //ユーザーが見つかり(true)、リクエストのハッシュと保存されたハッシュが一致した場合(true)、ユーザーを返す。
-            //どちらかがfalseなら、何も返さない。
-            if(
-                $user &&
-                Hash::check($request->password, $user->password)
-            ){
-                return $user;
+            $user = \App\Models\User::where('email', $request->input('email'))->first();
+
+            if (! $user) {
+                throw ValidationException::withMessages([
+                    'email' => 'ログイン情報が登録されていません。',
+                ]);
             }
-            return null;
+
+            if (! Hash::check($request->input('password'), $user->password)) {
+                throw ValidationException::withMessages([
+                    'password' => 'パスワードが間違っています。',
+                ]);
+            }
+
+            if (is_null($user->email_verified_at)) {
+                throw ValidationException::withMessages([
+                    'email' => 'メール認証が完了していません。'
+                ]);
+            }
+
+            return $user;
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(
+                Str::lower($request->input(Fortify::username())) . '|' . $request->ip()
+            );
 
             return Limit::perMinute(5)->by($throttleKey);
         });

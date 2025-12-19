@@ -1,82 +1,111 @@
 @extends('layouts.app')
+
 @section('title', '送付先住所の変更')
 
+@section('css')
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/address.css') }}"
+    >
+@endsection
+
 @section('content')
-<div class="address-page">
+    <div class="address-edit-page">
+        <h1 class="address-edit-title">
+            住所の変更
+        </h1>
 
-    <h1>送付先住所の変更</h1>
+        @if (session('success'))
+            <p class="address-edit-success">
+                {{ session('success') }}
+            </p>
+        @endif
 
-    {{-- エラーメッセージ --}}
-    @if ($errors->any())
-        <div class="address-errors">
-            @foreach ($errors->all() as $error)
-                <p style="color:red;">{{ $error }}</p>
-            @endforeach
-        </div>
-    @endif
+        <form
+            method="POST"
+            action="{{ route('purchase.address.update', $item->id) }}"
+            class="address-edit-form"
+        >
+            @csrf
 
-    {{-- 成功メッセージ --}}
-    @if (session('success'))
-        <p style="color:green;">
-            {{ session('success') }}
-        </p>
-    @endif
+            <div class="address-edit-field">
+                <label
+                    for="postcode"
+                    class="address-edit-label"
+                >
+                    郵便番号
+                </label>
 
-    <form action="{{ route('purchase.address.update', $item->id) }}" method="POST">
-        @csrf
+                <input
+                    id="postcode"
+                    type="text"
+                    name="postcode"
+                    value="{{ old('postcode', $shippingAddress['postcode'] ?? '') }}"
+                    class="address-edit-input"
+                    placeholder="例：123-4567"
+                >
 
-        <div class="address-field">
-            <label for="name">お名前</label>
-            <input
-                id="name"
-                type="text"
-                name="name"
-                value="{{ old('name', $shippingAddress['name']) }}"
-            >
-        </div>
+                @error('postcode')
+                    <p class="address-edit-error">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
 
-        <div class="address-field">
-            <label for="postcode">郵便番号（例：123-4567）</label>
-            <input
-                id="postcode"
-                type="text"
-                name="postcode"
-                value="{{ old('postcode', $shippingAddress['postcode']) }}"
-            >
-        </div>
+            <div class="address-edit-field">
+                <label
+                    for="address"
+                    class="address-edit-label"
+                >
+                    住所
+                </label>
 
-        <div class="address-field">
-            <label for="address">住所</label>
-            <input
-                id="address"
-                type="text"
-                name="address"
-                value="{{ old('address', $shippingAddress['address']) }}"
-            >
-        </div>
+                <input
+                    id="address"
+                    type="text"
+                    name="address"
+                    value="{{ old('address', $shippingAddress['address'] ?? '') }}"
+                    class="address-edit-input"
+                >
 
-        <div class="address-field">
-            <label for="building">建物名（任意）</label>
-            <input
-                id="building"
-                type="text"
-                name="building"
-                value="{{ old('building') }}"
-            >
-        </div>
+                @error('address')
+                    <p class="address-edit-error">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
 
-        <div class="address-actions">
-            <button type="submit">
-                この住所を保存して購入確認に戻る
-            </button>
-        </div>
-    </form>
+            <div class="address-edit-field">
+                <label
+                    for="building"
+                    class="address-edit-label"
+                >
+                    建物名
+                </label>
 
-    <div class="address-back-link">
-        <a href="{{ route('purchase.confirm', $item->id) }}">
-            変更せずに購入確認に戻る
-        </a>
+                <input
+                    id="building"
+                    type="text"
+                    name="building"
+                    value="{{ old('building', $shippingAddress['building'] ?? '') }}"
+                    class="address-edit-input"
+                >
+
+                @error('building')
+                    <p class="address-edit-error">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <div class="address-edit-actions">
+                <button
+                    type="submit"
+                    class="address-edit-submit"
+                >
+                    更新する
+                </button>
+            </div>
+        </form>
     </div>
-
-</div>
 @endsection

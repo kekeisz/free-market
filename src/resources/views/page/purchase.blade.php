@@ -1,56 +1,161 @@
 @extends('layouts.app')
+
 @section('title', '購入確認')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/purchase.css') }}">
+@endsection
+
 @section('content')
-<div class="purchase-page">
+    <div class="purchase-page">
 
-    <h1>購入確認</h1>
+        @if ($errors->any())
+            <div class="purchase-errors">
+                @foreach ($errors->all() as $error)
+                    <p class="purchase-error-text">{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
 
-    @if ($errors->any())
-        <div class="purchase-errors">
-            @foreach ($errors->all() as $error)
-                <p style="color:red;">{{ $error }}</p>
-            @endforeach
+        @if (session('success'))
+            <p class="purchase-success">{{ session('success') }}</p>
+        @endif
+
+        @php
+            $paymentMethod = old('payment_method', $paymentMethod ?? '');
+            $paymentMethodLabel = match ($paymentMethod) {
+                'convenience' => 'コンビニ払い',
+                'card' => 'クレジットカード',
+                default => '選択してください',
+            };
+        @endphp
+
+        <div class="purchase-layout">
+            <div class="purchase-left">
+                <div class="purchase-item">
+                    <div class="purchase-item-image">
+                        @if (!empty($item->image))
+                            <img
+                                src="{{ asset('storage/' . $item->image) }}"
+                                alt="{{ $item->name }}"
+                                class="purchase-item-image-img"
+                            >
+                        @else
+                            <div class="purchase-item-image-placeholder"></div>
+                        @endif
+                    </div>
+
+                    <div class="purchase-item-info">
+                        <p class="purchase-item-name">{{ $item->name }}</p>
+                        <p class="purchase-item-price">¥{{ number_format($item->price) }}</p>
+                    </div>
+                </div>
+
+                <form
+                    id="purchase-form"
+                    action="{{ route('purchase.exec', $item->id) }}"
+                    method="POST"
+                    class="purchase-form"
+                >
+                    @csrf
+
+                    <div class="purchase-section purchase-section-payment">
+                        <div class="purchase-section-header">
+                            <p class="purchase-section-title">支払い方法</p>
+                        </div>
+
+                        <div class="purchase-payment">
+                            <div class="purchase-select-wrapper">
+                                <select name="payment_method" class="purchase-select" required>
+                                    <option value="convenience">コンビニ払い</option>
+                                    <option value="card">クレジットカード</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="purchase-section purchase-section-address">
+                        <div class="purchase-section-header purchase-section-header-between">
+                            <p class="purchase-section-title">配送先</p>
+
+                            <a href="{{ route('purchase.address', $item->id) }}" class="purchase-change-link">
+                                変更する
+                            </a>
+                        </div>
+
+                        <div class="purchase-address">
+                            <p class="purchase-address-text">
+                                〒{{ $shippingAddress['postcode'] }}
+                            </p>
+                            <p class="purchase-address-text">
+                                {{ $shippingAddress['address'] }}
+                            </p>
+                            @if (!empty($shippingAddress['building']))
+                                <p class="purchase-address-text">
+                                    {{ $shippingAddress['building'] }}
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="purchase-right-sp">
+                        <button type="submit" class="purchase-submit">
+                            購入する
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="purchase-right">
+                <div class="purchase-summary">
+                    <div class="purchase-summary-row purchase-summary-row-price">
+                        <p class="purchase-summary-label">商品代金</p>
+                        <p class="purchase-summary-value">¥{{ number_format($item->price) }}</p>
+                    </div>
+
+                    <div class="purchase-summary-row purchase-summary-row-payment">
+                        <p class="purchase-summary-label">支払い方法</p>
+                        <p class="purchase-summary-value" id="purchase-payment-method-text">{{ $paymentMethodLabel }}</p>
+                    </div>
+                </div>
+
+                <button type="submit" form="purchase-form" class="purchase-submit purchase-submit-desktop">
+                    購入する
+                </button>
+            </div>
         </div>
-    @endif
-
-    @if (session('success'))
-        <p style="color:green;">{{ session('success') }}</p>
-    @endif
-
-    <div class="purchase-item">
-        <p>商品名：{{ $item->name }}</p>
-        <p>価格：{{ number_format($item->price) }} 円</p>
     </div>
+    <script>
+        (() => {
+            const labelMap = {
+                convenience: 'コンビニ払い',
+                card: 'クレジットカード',
+            };
 
-    <div class="purchase-address">
-        <h2>送付先住所</h2>
+            const syncPaymentText = () => {
+                const select = document.querySelector('select[name="payment_method"]');
+                const text = document.getElementById('purchase-payment-method-text');
 
-        <p>
-            お名前：{{ $shippingAddress['name'] }}<br>
-            郵便番号：{{ $shippingAddress['postcode'] }}<br>
-            住所：{{ $shippingAddress['address'] }}
-        </p>
+                if (!select || !text) {
+                    return;
+                }
 
-        <a href="{{ route('purchase.address', $item->id) }}">
-            住所を変更する
-        </a>
-    </div>
+                const value = select.value || '';
+                text.textContent = labelMap[value] ?? '選択してください';
+            };
 
-    <form action="{{ route('purchase.exec', $item->id) }}" method="POST">
-        @csrf
+            document.addEventListener('DOMContentLoaded', () => {
+                const select = document.querySelector('select[name="payment_method"]');
+                if (select) {
+                    select.addEventListener('change', syncPaymentText);
+                    select.addEventListener('input', syncPaymentText);
+                }
+                syncPaymentText();
+            });
 
-        <div class="purchase-payment">
-            <label for="payment_method">支払い方法</label>
-            <select id="payment_method" name="payment_method" required>
-                <option value="">選択してください</option>
-                <option value="convenience">コンビニ払い</option>
-                <option value="card">クレジットカード</option>
-            </select>
-        </div>
-
-        <button type="submit">購入する</button>
-    </form>
-
-</div>
+            window.addEventListener('pageshow', () => {
+                syncPaymentText();
+            });
+        })();
+    </script>
 @endsection

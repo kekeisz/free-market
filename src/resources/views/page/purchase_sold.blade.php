@@ -27,15 +27,12 @@
         <h2>送付先住所</h2>
 
         @php
-            // ★ shippingAddress があれば優先、無ければ user 情報
-            $name     = $shippingAddress->name     ?? $user->name;
             $postcode = $shippingAddress->postcode ?? $user->postcode;
             $address  = $shippingAddress->address  ?? $user->address;
         @endphp
 
         @if ($address)
             <p>
-                お名前：{{ $name }}<br>
                 郵便番号：{{ $postcode }}<br>
                 住所：{{ $address }}
             </p>

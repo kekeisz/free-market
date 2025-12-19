@@ -8,7 +8,6 @@ class RegisterResponse implements RegisterResponseContract
 {
     public function toResponse($request)
     {
-        return redirect('/mypage/profile');
-        // 登録後にプロフィール設定画面へ遷移
+        return redirect()->route('mypage.update');
     }
 }

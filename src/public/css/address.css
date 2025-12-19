@@ -1,0 +1,105 @@
+.address-edit-page {
+    max-width: 680px;
+    margin: 40px auto 120px;
+    box-sizing: border-box;
+}
+
+.address-edit-title {
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    margin: 50px 0 80px;
+}
+
+.address-edit-form {
+    width: 100%;
+}
+
+.address-edit-errors {
+    margin: 0 0 16px;
+}
+
+.address-edit-error-text {
+    margin: 0 0 6px;
+    font-size: 18px;
+    color: #e53935;
+}
+
+.address-edit-success {
+    margin: 0 0 16px;
+    font-size: 18px;
+}
+
+.address-edit-field {
+    margin-top: 80px;
+}
+
+.address-edit-label {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.address-edit-input {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #5f5f5f;
+    font-size: 24px;
+    box-sizing: border-box;
+}
+
+.address-edit-input:focus {
+    outline: none;
+    border-color: #777;
+}
+
+.address-edit-error {
+    margin: 10px 0 0;
+    font-size: 16px;
+    color: #e53935;
+}
+
+.address-edit-actions {
+    margin-top: 110px;
+}
+
+.address-edit-submit {
+    width: 100%;
+    height: 60px;
+    border-radius: 4px;
+    border: none;
+    background-color: #ff5555;
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.address-edit-submit:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+    .address-edit-page {
+        margin: 24px auto 80px;
+        padding: 0 16px;
+    }
+
+    .address-edit-title {
+        font-size: 32px;
+        margin: 18px 0 26px;
+    }
+
+    .address-edit-label {
+        font-size: 20px;
+    }
+
+    .address-edit-input {
+        font-size: 20px;
+    }
+
+    .address-edit-submit {
+        font-size: 22px;
+    }
+}

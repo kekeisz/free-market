@@ -1,20 +1,17 @@
 .item-page {
-    max-width: 1380px; /* .app-main と同じ幅 */
+    max-width: 1540px;
     margin: 0 auto;
     padding: 24px 20px 40px;
 }
 
-/* 上段 左右2カラムレイアウト */
 .item-layout {
     display: flex;
-    gap: 40px; /* 左右カラムの間隔 */
+    gap: 40px;
     align-items: flex-start;
 }
 
-/* 左：商品画像ブロック
-   理想幅 600px、でも余白が足りなければ shrink してOK */
 .item-image-area {
-    flex: 1 1 600px; /* ★ shrink するように変更 */
+    flex: 1 1 600px;
     min-width: 0;
 }
 
@@ -33,45 +30,38 @@
     aspect-ratio: 1 / 1;
     max-width: 600px;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    background-color: #d9d9d9;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 40px;
+    font-weight: 700;
+    color: #9d9d9d;
 }
 
-/* 右：商品情報ブロック
-   理想幅 690px、余白が足りなければこちらも shrink */
 .item-info-area {
-    flex: 1 1 690px; /* ★ shrink するように変更 */
+    flex: 1 1 690px;
     min-width: 0;
-    max-width: 690px; /* 上限だけ指定（広すぎ防止） */
+    max-width: 690px;
     display: flex;
     flex-direction: column;
     margin-left: 50px;
     gap: 14px;
 }
 
-/* 右ブロック直下の子要素は全部 100% 幅にする */
 .item-info-area > * {
     width: 100%;
 }
 
-/* 商品名 & ブランド */
-.item-title-block {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
 .item-title {
+    margin-bottom: 0;
     font-size: 45px;
     font-weight: 700;
 }
 
 .item-brand {
-    font-size: 14px;
-    opacity: 0.8;
+    margin: 0 0 10px 10px;
+    font-size: 20px;
 }
 
 /* 価格行 */
@@ -133,7 +123,6 @@
     font-size: 18px;
 }
 
-/* 購入ボタン行 */
 .item-purchase-row {
     margin-top: 8px;
 }
@@ -153,10 +142,19 @@
     color: #fff;
 }
 
-/* Sold ラベル */
 .sold-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    padding: 12px 16px;
+    border-radius: 4px;
+    border: none;
+    text-decoration: none;
+    font-size: 30px;
     font-weight: 700;
-    font-size: 14px;
+    background-color: #ff5555;
+    color: #fff;
 }
 
 /* セクション共通 */
@@ -170,7 +168,12 @@
     margin-bottom: 8px;
 }
 
+.item-section-title-description {
+    margin-top: 0;
+}
+
 .item-section-title-comment {
+    margin-bottom: 30px;
     color: #5f5f5f;
 }
 
@@ -184,12 +187,12 @@
 .item-info-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
+    gap: 10px;
+    margin-bottom: 30px;
 }
 
 .item-info-label {
-    min-width: 96px;
+    min-width: 120px;
     font-size: 24px;
     font-weight: 700;
 }
@@ -199,21 +202,22 @@
     margin-left: 60px;
 }
 
-/* カテゴリの楕円ピル */
 .item-category-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 15px;
     margin-left: 50px;
 }
 
 .item-category-pill {
-    width: 102px;
+    min-width: 103px;
     height: 30px;
+    padding: 0 10px;
     border-radius: 999px;
     background-color: #d9d9d9;
     font-size: 20px;
     text-align: center;
+    align-content: center;
 }
 
 /* コメントブロック（右ブロック内） */
@@ -235,11 +239,16 @@
     gap: 6px;
 }
 
+.item-comments-empty {
+    margin-left: 10px;
+    font-size: 20px;
+}
+
 /* コメントヘッダー（アイコン＋ユーザー名） */
 .item-comment-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 20px;
 }
 
 .item-comment-avatar {
@@ -273,12 +282,11 @@
     min-height: 54px;
     padding: 8px 12px;
     border-radius: 6px;
-    background-color: #f3f3f3;
+    background-color: #e5e5e5;
     font-size: 20px;
     align-content: center;
 }
 
-/* コメントフォーム */
 .item-comment-form-block {
     margin-top: 18px;
 }
@@ -290,6 +298,7 @@
 .item-comment-error {
     margin-bottom: 8px;
     font-size: 13px;
+    color: #e53935;
 }
 
 .item-comment-form-field {
@@ -302,6 +311,7 @@
     resize: vertical;
     min-height: 226px;
     font-size: 20px;
+    border: solid 1px #5f5f5f;
     border-radius: 6px;
 }
 
@@ -331,17 +341,20 @@
         margin-left: 15px;
     }
 
+    .btn-purchase-main {
+        font-size: 25px;
+    }
+
     .item-category-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 10px;
         margin-left: 25px;
     }
 
     .item-category-pill {
-        width: 80px;
-        height: 100%;
         font-size: 15px;
+        padding: 0 5px;
     }
 
     .item-info-value {
@@ -375,20 +388,15 @@
         height: auto;
     }
 
+    .btn-purchase-main {
+        font-size: 30px;
+    }
+
     .item-category-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 30px;
+        gap: 10px;
         margin-left: 50px;
-    }
-
-    .item-category-pill {
-        width: 102px;
-        height: 30px;
-        border-radius: 999px;
-        background-color: #d9d9d9;
-        font-size: 20px;
-        text-align: center;
     }
 
     .item-info-value {
@@ -437,25 +445,42 @@
     }
 }
 @media (max-width: 500px) {
-    .item-info-area {
-        margin-left: 15px;
+    .btn-purchase-main {
+        width: 90%;
     }
 
     .item-category-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 10px;
         margin-left: 25px;
     }
 
     .item-category-pill {
-        width: 80px;
-        height: 100%;
-        font-size: 15px;
+        min-width: 85px;
+        height: 20px;
+        padding: 0 2px;
+        font-size: 12px;
     }
 
     .item-info-value {
-        font-size: 18px;
+        font-size: 15px;
         margin-left: 25px;
+    }
+
+    .item-description {
+        font-size: 20px;
+    }
+
+    .item-section-title {
+        font-size: 30px;
+    }
+
+    .item-section-title-comment_form {
+        font-size: 25px;
+    }
+
+    .btn-comment-submit {
+        font-size: 20px;
     }
 }

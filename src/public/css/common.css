@@ -217,6 +217,10 @@ body {
 }
 
 @media (max-width: 767px) {
+    .app-header-inner {
+        gap: 12px;
+    }
+
     .app-logo {
         max-width: 170px;
     }

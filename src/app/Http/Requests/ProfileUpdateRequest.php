@@ -27,6 +27,7 @@ class ProfileUpdateRequest extends FormRequest
             'name'          => ['required', 'string', 'max:255'],
             'postcode'      => ['nullable', 'string', 'max:20', 'nullable', 'regex:/^\d{3}-\d{4}$/'],
             'address'       => ['nullable', 'string', 'max:255'],
+            'building'      => ['nullable', 'string', 'max:255'],
             'profile_image' => ['nullable', 'image', 'max:2048'],
         ];
     }
@@ -43,6 +44,9 @@ class ProfileUpdateRequest extends FormRequest
 
             'address.string' => '住所は文字列で入力してください。',
             'address.max'    => '住所は255文字以内で入力してください。',
+
+            'building.string' => '建物名は文字列で入力してください。',
+            'building.max'    => '建物名は255文字以内で入力してください。',
 
             'profile_image.image' => 'プロフィール画像は画像ファイルを選択してください。',
             'profile_image.max'   => 'プロフィール画像のサイズは2MB以内にしてください。',

@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
             ['name' => 'Carol',   'email' => 'carol@test.com'],
             ['name' => 'Dave',    'email' => 'dave@test.com'],
             ['name' => 'Ellen',   'email' => 'ellen@test.com'],
-            ['name' => 'Keke',    'email' => 'kekeisozaki13@gmail.com']
         ];
 
         foreach ($users as $user) {
@@ -31,6 +30,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password123'),
                 'postcode' => '150-0001',
                 'address' => '東京都渋谷区神宮前1-1-1',
+                'building' => '〇〇マンション101',
+                'email_verified_at' => now(),
             ]);
         }
     }

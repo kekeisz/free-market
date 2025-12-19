@@ -11,41 +11,42 @@ class TopController extends Controller
 {
     public function index(Request $request)
     {
-        $page = $request->query('page');        //URLの ?mylist=mylist などを取得
-        $keyword = $request->query('keyword');  //URLの ?keyword=スニーカー などを取得
+        $page = $request->query('page');
+        $keyword = $request->query('keyword');
 
-        // 基本のクエリ（全商品、Sold含む。自分の出品は除外）
+        $isMylistPage = $page === 'mylist';
+
+        if ($isMylistPage && !Auth::check()) {
+            return view('page.top', [
+                'items' => collect(),
+                'page' => $page,
+                'keyword' => $keyword,
+            ]);
+        }
+
         $query = Item::query()
-            ->withCount(['likes','comments'])
-            ->when(Auth::check(),
-            function ($q) {
-                $q->where('user_id', '!=', Auth::id()); // ログインしていたら自分の商品を除外
+            ->withCount(['likes', 'comments']);
+
+        if (Auth::check()) {
+            $query->where('user_id', '!=', Auth::id());
+        }
+
+        if (!empty($keyword)) {
+            $query->where('name', 'like', '%' . $keyword . '%');
+        }
+
+        if ($isMylistPage) {
+            $query->whereHas('likes', function ($query) {
+                $query->where('user_id', Auth::id());
             });
-
-        if ($keyword) {
-            $query->where('name', 'like', "%{$keyword}%"); //検索（部分一致）
         }
 
-        if ($page === 'mylist') { ///?page=mylistなのかを判別
-            if (!Auth::check()) {
-                $items = collect(); //空のコレクション:何も表示されない
-            } else {
-                $items = Item::query()
-                    ->withCount(['likes', 'comments'])
-                    ->whereHas('likes', function ($q) {  //Likesテーブルにあるproductだけを取得(likesはProductの関数名)
-                        $q->where('user_id', Auth::id());//そのうちuser_id = ログインユーザーだった場合そのProductを取得
-                    })
-                    ->get();
-            }
-        } else {
-            //mylistでない場合、通常の一覧を表示
-            $items = $query->get();
-        }
+        $items = $query->get();
 
         return view('page.top', [
             'items' => $items,
-            'page'     => $page,
-            'keyword'  => $keyword,
+            'page' => $page,
+            'keyword' => $keyword,
         ]);
     }
 }
