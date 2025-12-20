@@ -13,16 +13,11 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        // /mypage?page=buy | sell | null
-        // null のときは「どちらのタブも選択されていない」状態にしたいので、デフォルトは null にする
-        $page = $request->query('page'); // デフォルト値はつけない
-
-        // 出品した商品一覧
+        $page = $request->query('page');
         $items = $user->items()
             ->latest()
             ->get();
 
-        // 購入した商品一覧
         $boughtItems = $user->boughtItems()
             ->latest()
             ->get();
